@@ -1,0 +1,79 @@
+Function MutationsBreton(mot As String) As String
+    Dim Mutations(13,6) As String
+    Dim TypeMutation(13,6) As String ' "ancienne" ou "nouvelle"
+    
+    ' Vérifie que le mot n'est pas vide
+    If IsNull(mot) Or Len(mot)=0 Then
+        MutationsBreton = ""
+        Exit Function
+    End If
+    
+    ' Anciennes mutations
+    Mutations(1,0)="K": Mutations(1,1)="G": Mutations(1,2)="C'h": Mutations(1,3)="K": Mutations(1,4)="Impossible": Mutations(1,5)="": Mutations(1,6)=""
+    TypeMutation(1,1)="ancienne": TypeMutation(1,2)="ancienne": TypeMutation(1,3)="ancienne": TypeMutation(1,4)="" : TypeMutation(1,5)="ancienne"
+    Mutations(2,0)="T": Mutations(2,1)="D": Mutations(2,2)="Z": Mutations(2,3)="T": Mutations(2,4)="N": Mutations(2,5)="": Mutations(2,6)=""
+    TypeMutation(2,1)="ancienne": TypeMutation(2,2)="ancienne": TypeMutation(2,3)="ancienne": TypeMutation(2,4)="ancienne": TypeMutation(2,5)="ancienne"
+    Mutations(3,0)="P": Mutations(3,1)="B": Mutations(3,2)="F": Mutations(3,3)="P": Mutations(3,4)="M": Mutations(3,5)="V": Mutations(3,6)=""
+    TypeMutation(3,1)="ancienne": TypeMutation(3,2)="ancienne": TypeMutation(3,3)="ancienne": TypeMutation(3,4)="ancienne": TypeMutation(3,5)="ancienne": TypeMutation(3,6)="ancienne"
+    Mutations(4,0)="G": Mutations(4,1)="C'h": Mutations(4,2)="Impossible": Mutations(4,3)="K": Mutations(4,4)="Impossible": Mutations(4,5)="": Mutations(4,6)=""
+    TypeMutation(4,1)="ancienne": TypeMutation(4,3)="ancienne": TypeMutation(4,5)="ancienne"
+    Mutations(5,0)="GW": Mutations(5,1)="W": Mutations(5,2)="Impossible": Mutations(5,3)="Kw": Mutations(5,4)="Impossible": Mutations(5,5)="": Mutations(5,6)=""
+    TypeMutation(5,1)="ancienne": TypeMutation(5,3)="ancienne": TypeMutation(5,5)="ancienne"
+    Mutations(6,0)="D": Mutations(6,1)="Z": Mutations(6,2)="Impossible": Mutations(6,3)="T": Mutations(6,4)="N": Mutations(6,5)="": Mutations(6,6)=""
+    TypeMutation(6,1)="ancienne": TypeMutation(6,3)="ancienne": TypeMutation(6,4)="ancienne": TypeMutation(6,5)="ancienne"
+    Mutations(7,0)="B": Mutations(7,1)="V": Mutations(7,2)="Impossible": Mutations(7,3)="P": Mutations(7,4)="M": Mutations(7,5)="F": Mutations(7,6)=""
+    TypeMutation(7,1)="ancienne": TypeMutation(7,3)="ancienne": TypeMutation(7,4)="ancienne": TypeMutation(7,5)="ancienne": TypeMutation(7,6)="ancienne"
+    Mutations(8,0)="M": Mutations(8,1)="V": Mutations(8,2)="Impossible": Mutations(8,3)="Impossible": Mutations(8,4)="B": Mutations(8,5)="P": Mutations(8,6)="F"
+    TypeMutation(8,1)="ancienne": TypeMutation(8,4)="ancienne": TypeMutation(8,5)="ancienne": TypeMutation(8,6)="ancienne"
+    
+    ' Nouvelles mutations à l'oral
+    Mutations(9,0)="H": Mutations(9,1)="": Mutations(9,2)="": Mutations(9,3)="": Mutations(9,4)="": Mutations(9,5)="": Mutations(9,6)=""
+    TypeMutation(9,1)="nouvelle"
+    Mutations(10,0)="C'H": Mutations(10,1)="h": Mutations(10,2)="": Mutations(10,3)="": Mutations(10,4)="": Mutations(10,5)="": Mutations(10,6)=""
+    TypeMutation(10,1)="nouvelle"
+    Mutations(11,0)="CH": Mutations(11,1)="j": Mutations(11,2)="": Mutations(11,3)="": Mutations(11,4)="": Mutations(11,5)="": Mutations(11,6)=""
+    TypeMutation(11,1)="nouvelle"
+    Mutations(12,0)="S": Mutations(12,1)="z": Mutations(12,2)="": Mutations(12,3)="": Mutations(12,4)="": Mutations(12,5)="": Mutations(12,6)=""
+    TypeMutation(12,1)="nouvelle"
+    Mutations(13,0)="F": Mutations(13,1)="v": Mutations(13,2)="": Mutations(13,3)="": Mutations(13,4)="": Mutations(13,5)="": Mutations(13,6)=""
+    TypeMutation(13,1)="nouvelle"
+    
+    Dim resultat As String
+    resultat = ""
+    
+    Dim i As Integer, j As Integer
+    Dim lettre As String
+    lettre = UCase(Left(mot,2))
+    
+    For i = 1 To 13
+        If Mutations(i,0) = lettre Or Mutations(i,0) = UCase(Left(mot,1)) Then
+            For j = 1 To 6
+                Dim initiale As String
+                initiale = Mutations(i,j)
+                If initiale <> "Impossible" Then
+                    Dim check As String
+                    If TypeMutation(i,j)="ancienne" Then
+                        check = "✔️"
+                    ElseIf TypeMutation(i,j)="nouvelle" Then
+                        check = "✔️"
+                    Else
+                        check = "˟"
+                    End If
+                    
+                    ' Si "Vide", on supprime l'initiale pour toutes les lettres
+                    If initiale = "" Then
+                        resultat = resultat & Mid(mot, Len(Mutations(i,0)) + 1) & check & ", "
+                    Else
+                        resultat = resultat & initiale & Mid(mot, Len(Mutations(i,0)) + 1) & check & ", "
+                    End If
+                End If
+            Next j
+        End If
+    Next i
+    
+    If Len(resultat) > 0 Then
+        resultat = Left(resultat, Len(resultat)-2)
+    End If
+    
+    MutationsBreton = resultat
+End Function
